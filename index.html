@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV Fistula EMR System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 150, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a6bb3, #0d4d8a);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3d8b40;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            min-height: 80vh;
+        }
+        
+        .patients-list {
+            width: 30%;
+            border-right: 1px solid #ddd;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            max-height: 75vh;
+        }
+        
+        .patients-list h3 {
+            padding: 15px;
+            background-color: #e8f0fe;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        #patientCount {
+            background-color: #1a6bb3;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .patient-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .patient-item:hover {
+            background-color: #e8f0fe;
+        }
+        
+        .patient-item.active {
+            background-color: #d4e6ff;
+            border-left: 4px solid #1a6bb3;
+        }
+        
+        .patient-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .patient-details {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .patient-details span {
+            background-color: #eee;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        .form-container {
+            width: 70%;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 75vh;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #1a6bb3;
+        }
+        
+        .form-section h3 {
+            color: #1a6bb3;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-section h3 i {
+            font-size: 1.2rem;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .other-specify {
+            margin-top: 10px;
+            margin-left: 20px;
+            display: none;
+        }
+        
+        .other-specify.show {
+            display: block;
+        }
+        
+        .lab-section {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .followup-section {
+            background-color: #fff8f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .exclusion-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .status-ready {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-not-ready {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-excluded {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.error {
+            background-color: #e74c3c;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .patients-list,
+            .form-container {
+                width: 100%;
+            }
+            
+            .patients-list {
+                max-height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <div>
+                    <h1>AV Fistula EMR System</h1>
+                    <p>Patient Management & Follow-up Application</p>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button id="newPatientBtn" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> New Patient
+                </button>
+                <button id="exportDataBtn" class="btn-secondary">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+            </div>
+        </header>
+        
+        <div class="content-wrapper">
+            <div class="patients-list">
+                <h3>Patient Records <span id="patientCount">0</span></h3>
+                <div id="patientsContainer">
+                    <!-- Patient list will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <div id="emptyState" class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>No Patient Selected</h3>
+                    <p>Select a patient from the list or create a new patient record</p>
+                    <button id="emptyNewPatientBtn" class="btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-user-plus"></i> Create New Patient
+                    </button>
+                </div>
+                
+                <form id="patientForm" style="display: none;">
+                    <!-- Section A: Patient Demographics and AVF Details -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Patient Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patientName" class="required">Full Name</label>
+                                <input type="text" id="patientName" name="patientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientAge" class="required">Age</label>
+                                <input type="number" id="patientAge" name="patientAge" min="0" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientGender" class="required">Gender</label>
+                                <select id="patientGender" name="patientGender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="required">Side of AVF</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" id="sideLeft" name="avfSide" value="Left" required>
+                                        <label for="sideLeft">Left</label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" id="sideRight" name="avfSide" value="Right" required>
+                                        <label for="sideRight">Right</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="avfDate" class="required">Date of AVF Creation</label>
+                                <input type="date" id="avfDate" name="avfDate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required">AVF Location</label>
+                            <div class="checkbox-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="locationRadio" name="avfLocation" value="Radiocephalic" required>
+                                    <label for="locationRadio">Radiocephalic</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="locationBrachio" name="avfLocation" value="Brachiocephalic">
+                                    <label for="locationBrachio">Brachiocephalic</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="locationBrachiobasilic" name="avfLocation" value="Brachiobasilic">
+                                    <label for="locationBrachiobasilic">Brachiobasilic</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="locationOther" name="avfLocation" value="Other">
+                                    <label for="locationOther">Other (specify):</label>
+                                </div>
+                            </div>
+                            <div id="otherLocationContainer" class="other-specify">
+                                <input type="text" id="otherLocation" placeholder="Specify other AVF location">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section B: Medical History and Labs -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-file-medical"></i> Medical History & Lab Results</h3>
+                        
+                        <div class="form-group">
+                            <label for="medicalHistory">Medical History</label>
+                            <textarea id="medicalHistory" name="medicalHistory" placeholder="Enter relevant medical history..."></textarea>
+                        </div>
+                        
+                        <div class="lab-section">
+                            <h4>Laboratory Results</h4>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cbc">CBC (Complete Blood Count)</label>
+                                    <input type="text" id="cbc" name="cbc" placeholder="Optional - Enter CBC results">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bloodGroup">Blood Group</label>
+                                    <select id="bloodGroup" name="bloodGroup">
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cpr">C-reactive Protein (CRP)</label>
+                                    <input type="text" id="cpr" name="cpr" placeholder="Enter CRP value">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Viral Screening</label>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hiv">HIV</label>
+                                        <select id="hiv" name="hiv">
+                                            <option value="">Select</option>
+                                            <option value="+">Positive (+)</option>
+                                            <option value="-">Negative (-)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hbv">HBV</label>
+                                        <select id="hbv" name="hbv">
+                                            <option value="">Select</option>
+                                            <option value="+">Positive (+)</option>
+                                            <option value="-">Negative (-)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hcv">HCV</label>
+                                        <select id="hcv" name="hcv">
+                                            <option value="">Select</option>
+                                            <option value="+">Positive (+)</option>
+                                            <option value="-">Negative (-)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Exclusion Criteria -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Exclusion Criteria</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="crossMatching" class="required">1. Cross Matching</label>
+                                <select id="crossMatching" name="crossMatching" required>
+                                    <option value="">Select Status</option>
+                                    <option value="done">Done</option>
+                                    <option value="not yet">Not Yet</option>
+                                    <option value="no">No</option>
+                                </select>
+                                <div id="crossMatchingStatus" class="exclusion-status"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="preparedBlood" class="required">2. Prepared Blood</label>
+                                <select id="preparedBlood" name="preparedBlood" required>
+                                    <option value="">Select Status</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="not yet">Not Yet</option>
+                                    <option value="no">No</option>
+                                </select>
+                                <div id="preparedBloodStatus" class="exclusion-status"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="exclusionOverallStatus" class="exclusion-status" style="margin-top: 20px; padding: 10px;"></div>
+                    </div>
+                    
+                    <!-- Follow-up Section -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-calendar-check"></i> Follow-up Assessment</h3>
+                        
+                        <div class="followup-section">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="weekNumber">Week Number</label>
+                                    <input type="number" id="weekNumber" name="weekNumber" min="1" max="100">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Complications Since AVF Creation (Select all that apply)</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationThrombosis" name="complications" value="Thrombosis">
+                                        <label for="complicationThrombosis">Thrombosis</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationInfection" name="complications" value="Infection">
+                                        <label for="complicationInfection">Infection</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationStenosis" name="complications" value="Stenosis">
+                                        <label for="complicationStenosis">Stenosis</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationAneurysm" name="complications" value="Aneurysm formation">
+                                        <label for="complicationAneurysm">Aneurysm formation</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationHematoma" name="complications" value="Hematoma">
+                                        <label for="complicationHematoma">Hematoma</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationSteal" name="complications" value="Steal syndrome">
+                                        <label for="complicationSteal">Steal syndrome</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationNone" name="complications" value="None">
+                                        <label for="complicationNone">None</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="complicationOther" name="complications" value="Other">
+                                        <label for="complicationOther">Other (specify):</label>
+                                    </div>
+                                </div>
+                                <div id="otherComplicationContainer" class="other-specify">
+                                    <input type="text" id="otherComplication" placeholder="Specify other complication">
+                                </div>
+                            </div>
+                            
+                            <h4>AVF Maturation and Use</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="maturation">Has the AVF matured sufficiently for dialysis use?</label>
+                                    <select id="maturation" name="maturation">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                        <option value="Not yet assessed">Not yet assessed</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cannulation">Time to first successful cannulation</label>
+                                    <select id="cannulation" name="cannulation">
+                                        <option value="">Select</option>
+                                        <option value="< 6 weeks">< 6 weeks</option>
+                                        <option value="6–8 weeks">6–8 weeks</option>
+                                        <option value="> 8 weeks">> 8 weeks</option>
+                                        <option value="Not cannulated">Not cannulated</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="dialysisUse">Is the AVF currently being used for hemodialysis?</label>
+                                    <select id="dialysisUse" name="dialysisUse">
+                                        <option value="">Select</option>
+                                        <option value="Yes (primary access)">Yes (primary access)</option>
+                                        <option value="Yes (with difficulty)">Yes (with difficulty)</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <h4>AVF Functionality (Clinical Assessment)</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="palpableThrill">Presence of palpable thrill</label>
+                                    <select id="palpableThrill" name="palpableThrill">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="audibleBruit">Presence of audible bruit</label>
+                                    <select id="audibleBruit" name="audibleBruit">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adequateFlow">Adequate blood flow during dialysis sessions</label>
+                                    <select id="adequateFlow" name="adequateFlow">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                        <option value="Not applicable">Not applicable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bloodFlowRate">Average achieved blood flow rate (mL/min)</label>
+                                    <input type="number" id="bloodFlowRate" name="bloodFlowRate" min="0" max="2000">
+                                </div>
+                            </div>
+                            
+                            <h4>AVF Outcome (Primary Endpoint)</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="avfOutcome">AVF outcome at follow-up</label>
+                                    <select id="avfOutcome" name="avfOutcome">
+                                        <option value="">Select</option>
+                                        <option value="Successful (usable for dialysis without intervention)">Successful (usable for dialysis without intervention)</option>
+                                        <option value="Assisted primary success (usable after intervention)">Assisted primary success (usable after intervention)</option>
+                                        <option value="Failure (never usable or abandoned)">Failure (never usable or abandoned)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="failureReason">If failed, reason for failure</label>
+                                    <select id="failureReason" name="failureReason">
+                                        <option value="">Select</option>
+                                        <option value="Primary non-maturation">Primary non-maturation</option>
+                                        <option value="Early thrombosis">Early thrombosis</option>
+                                        <option value="Infection">Infection</option>
+                                        <option value="Other">Other (specify)</option>
+                                    </select>
+                                    <div id="otherFailureContainer" class="other-specify">
+                                        <input type="text" id="otherFailure" placeholder="Specify other failure reason">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="button" id="cancelBtn" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <div>
+                            <button type="button" id="deleteBtn" class="btn-danger" style="display: none;">
+                                <i class="fas fa-trash"></i> Delete Patient
+                            </button>
+                            <button type="submit" id="saveBtn" class="btn-primary">
+                                <i class="fas fa-save"></i> Save Patient Data
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Data management
+        let patients = [];
+        let currentPatientId = null;
+        
+        // DOM elements
+        const patientForm = document.getElementById('patientForm');
+        const emptyState = document.getElementById('emptyState');
+        const patientsContainer = document.getElementById('patientsContainer');
+        const patientCount = document.getElementById('patientCount');
+        const toast = document.getElementById('toast');
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatients();
+            setupEventListeners();
+            updatePatientCount();
+            
+            // Set default date to today for AVF creation
+            document.getElementById('avfDate').valueAsDate = new Date();
+            
+            // Show empty state initially
+            showEmptyState();
+        });
+        
+        // Load patients from localStorage
+        function loadPatients() {
+            const storedPatients = localStorage.getItem('avfPatients');
+            if (storedPatients) {
+                patients = JSON.parse(storedPatients);
+                renderPatientList();
+            }
+        }
+        
+        // Save patients to localStorage
+        function savePatients() {
+            localStorage.setItem('avfPatients', JSON.stringify(patients));
+            updatePatientCount();
+        }
+        
+        // Update patient count display
+        function updatePatientCount() {
+            patientCount.textContent = patients.length;
+        }
+        
+        // Render the patient list
+        function renderPatientList() {
+            patientsContainer.innerHTML = '';
+            
+            if (patients.length === 0) {
+                patientsContainer.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <i class="fas fa-user-slash"></i>
+                        <p>No patients yet. Add your first patient.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort patients by name
+            patients.sort((a, b) => a.name.localeCompare(b.name));
+            
+            patients.forEach(patient => {
+                const patientElement = document.createElement('div');
+                patientElement.className = `patient-item ${currentPatientId === patient.id ? 'active' : ''}`;
+                patientElement.dataset.id = patient.id;
+                
+                patientElement.innerHTML = `
+                    <div class="patient-name">${patient.name}</div>
+                    <div class="patient-details">
+                        <span>${patient.age} yrs</span>
+                        <span>${patient.gender}</span>
+                        <span>${patient.avfSide} AVF</span>
+                        <span>Week ${patient.followUps && patient.followUps.length > 0 ? patient.followUps[patient.followUps.length - 1].weekNumber || 'N/A' : 'N/A'}</span>
+                    </div>
+                `;
+                
+                patientElement.addEventListener('click', () => loadPatient(patient.id));
+                patientsContainer.appendChild(patientElement);
+            });
+        }
+        
+        // Load a patient into the form
+        function loadPatient(id) {
+            const patient = patients.find(p => p.id === id);
+            if (!patient) return;
+            
+            currentPatientId = id;
+            
+            // Hide empty state, show form
+            emptyState.style.display = 'none';
+            patientForm.style.display = 'block';
+            
+            // Populate form fields
+            document.getElementById('patientName').value = patient.name || '';
+            document.getElementById('patientAge').value = patient.age || '';
+            document.getElementById('patientGender').value = patient.gender || '';
+            
+            // Set AVF side radio button
+            if (patient.avfSide) {
+                document.querySelector(`input[name="avfSide"][value="${patient.avfSide}"]`).checked = true;
+            }
+            
+            document.getElementById('avfDate').value = patient.avfDate || '';
+            
+            // Set AVF location
+            if (patient.avfLocation) {
+                if (patient.avfLocation.startsWith('Other:')) {
+                    document.getElementById('locationOther').checked = true;
+                    document.getElementById('otherLocation').value = patient.avfLocation.substring(7);
+                    document.getElementById('otherLocationContainer').classList.add('show');
+                } else {
+                    document.querySelector(`input[name="avfLocation"][value="${patient.avfLocation}"]`).checked = true;
+                }
+            }
+            
+            document.getElementById('medicalHistory').value = patient.medicalHistory || '';
+            document.getElementById('cbc').value = patient.labs?.cbc || '';
+            document.getElementById('bloodGroup').value = patient.labs?.bloodGroup || '';
+            document.getElementById('cpr').value = patient.labs?.cpr || '';
+            document.getElementById('hiv').value = patient.labs?.viralScreening?.hiv || '';
+            document.getElementById('hbv').value = patient.labs?.viralScreening?.hbv || '';
+            document.getElementById('hcv').value = patient.labs?.viralScreening?.hcv || '';
+            
+            document.getElementById('crossMatching').value = patient.exclusion?.crossMatching || '';
+            document.getElementById('preparedBlood').value = patient.exclusion?.preparedBlood || '';
+            
+            updateExclusionStatus();
+            
+            // Load latest follow-up data if available
+            if (patient.followUps && patient.followUps.length > 0) {
+                const latestFollowUp = patient.followUps[patient.followUps.length - 1];
+                
+                document.getElementById('weekNumber').value = latestFollowUp.weekNumber || '';
+                
+                // Set complications checkboxes
+                document.querySelectorAll('input[name="complications"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                if (latestFollowUp.complications && latestFollowUp.complications.length > 0) {
+                    latestFollowUp.complications.forEach(complication => {
+                        if (complication.startsWith('Other:')) {
+                            document.getElementById('complicationOther').checked = true;
+                            document.getElementById('otherComplication').value = complication.substring(7);
+                            document.getElementById('otherComplicationContainer').classList.add('show');
+                        } else {
+                            const checkbox = document.querySelector(`input[name="complications"][value="${complication}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        }
+                    });
+                }
+                
+                document.getElementById('maturation').value = latestFollowUp.maturation?.matured || '';
+                document.getElementById('cannulation').value = latestFollowUp.maturation?.timeToCannulation || '';
+                document.getElementById('dialysisUse').value = latestFollowUp.maturation?.dialysisUse || '';
+                
+                document.getElementById('palpableThrill').value = latestFollowUp.functionality?.palpableThrill || '';
+                document.getElementById('audibleBruit').value = latestFollowUp.functionality?.audibleBruit || '';
+                document.getElementById('adequateFlow').value = latestFollowUp.functionality?.adequateFlow || '';
+                document.getElementById('bloodFlowRate').value = latestFollowUp.functionality?.bloodFlowRate || '';
+                
+                document.getElementById('avfOutcome').value = latestFollowUp.outcome?.avfOutcome || '';
+                
+                if (latestFollowUp.outcome?.failureReason) {
+                    if (latestFollowUp.outcome.failureReason.startsWith('Other:')) {
+                        document.getElementById('failureReason').value = 'Other';
+                        document.getElementById('otherFailure').value = latestFollowUp.outcome.failureReason.substring(7);
+                        document.getElementById('otherFailureContainer').classList.add('show');
+                    } else {
+                        document.getElementById('failureReason').value = latestFollowUp.outcome.failureReason;
+                    }
+                }
+            }
+            
+            // Show delete button for existing patients
+            document.getElementById('deleteBtn').style.display = 'inline-block';
+            
+            // Update patient list highlight
+            renderPatientList();
+        }
+        
+        // Show empty state
+        function showEmptyState() {
+            emptyState.style.display = 'block';
+            patientForm.style.display = 'none';
+            currentPatientId = null;
+            renderPatientList();
+        }
+        
+        // Create a new patient
+        function newPatient() {
+            currentPatientId = null;
+            patientForm.reset();
+            
+            // Reset special fields
+            document.getElementById('otherLocationContainer').classList.remove('show');
+            document.getElementById('otherComplicationContainer').classList.remove('show');
+            document.getElementById('otherFailureContainer').classList.remove('show');
+            
+            // Reset checkboxes
+            document.querySelectorAll('input[name="complications"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Set default date to today
+            document.getElementById('avfDate').valueAsDate = new Date();
+            
+            // Hide delete button for new patients
+            document.getElementById('deleteBtn').style.display = 'none';
+            
+            // Update exclusion status
+            updateExclusionStatus();
+            
+            // Show form, hide empty state
+            emptyState.style.display = 'none';
+            patientForm.style.display = 'block';
+            
+            // Focus on first field
+            document.getElementById('patientName').focus();
+        }
+        
+        // Save patient data
+        function savePatient() {
+            // Get form data
+            const patientData = {
+                id: currentPatientId || Date.now(),
+                name: document.getElementById('patientName').value,
+                age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                avfSide: document.querySelector('input[name="avfSide"]:checked')?.value,
+                avfDate: document.getElementById('avfDate').value,
+                avfLocation: document.querySelector('input[name="avfLocation"]:checked')?.value === 'Other' 
+                    ? `Other: ${document.getElementById('otherLocation').value}`
+                    : document.querySelector('input[name="avfLocation"]:checked')?.value,
+                medicalHistory: document.getElementById('medicalHistory').value,
+                labs: {
+                    cbc: document.getElementById('cbc').value,
+                    bloodGroup: document.getElementById('bloodGroup').value,
+                    cpr: document.getElementById('cpr').value,
+                    viralScreening: {
+                        hiv: document.getElementById('hiv').value,
+                        hbv: document.getElementById('hbv').value,
+                        hcv: document.getElementById('hcv').value
+                    }
+                },
+                exclusion: {
+                    crossMatching: document.getElementById('crossMatching').value,
+                    preparedBlood: document.getElementById('preparedBlood').value
+                }
+            };
+            
+            // Get follow-up data
+            const followUpData = {
+                date: new Date().toISOString().split('T')[0],
+                weekNumber: document.getElementById('weekNumber').value,
+                complications: [],
+                maturation: {
+                    matured: document.getElementById('maturation').value,
+                    timeToCannulation: document.getElementById('cannulation').value,
+                    dialysisUse: document.getElementById('dialysisUse').value
+                },
+                functionality: {
+                    palpableThrill: document.getElementById('palpableThrill').value,
+                    audibleBruit: document.getElementById('audibleBruit').value,
+                    adequateFlow: document.getElementById('adequateFlow').value,
+                    bloodFlowRate: document.getElementById('bloodFlowRate').value
+                },
+                outcome: {
+                    avfOutcome: document.getElementById('avfOutcome').value,
+                    failureReason: document.getElementById('failureReason').value === 'Other'
+                        ? `Other: ${document.getElementById('otherFailure').value}`
+                        : document.getElementById('failureReason').value
+                }
+            };
+            
+            // Get complications
+            const complicationCheckboxes = document.querySelectorAll('input[name="complications"]:checked');
+            complicationCheckboxes.forEach(checkbox => {
+                if (checkbox.value === 'Other') {
+                    followUpData.complications.push(`Other: ${document.getElementById('otherComplication').value}`);
+                } else {
+                    followUpData.complications.push(checkbox.value);
+                }
+            });
+            
+            // Check if patient already exists
+            const existingIndex = patients.findIndex(p => p.id === patientData.id);
+            
+            if (existingIndex >= 0) {
+                // Update existing patient
+                patients[existingIndex] = {
+                    ...patients[existingIndex],
+                    ...patientData
+                };
+                
+                // Add new follow-up data
+                if (!patients[existingIndex].followUps) {
+                    patients[existingIndex].followUps = [];
+                }
+                
+                // Only add if we have at least week number or some follow-up data
+                if (followUpData.weekNumber || followUpData.complications.length > 0) {
+                    patients[existingIndex].followUps.push(followUpData);
+                }
+                
+                showToast('Patient data updated successfully!', 'success');
+            } else {
+                // Create new patient
+                patientData.followUps = [];
+                
+                // Only add follow-up data if we have at least week number or some follow-up data
+                if (followUpData.weekNumber || followUpData.complications.length > 0) {
+                    patientData.followUps.push(followUpData);
+                }
+                
+                patients.push(patientData);
+                showToast('New patient created successfully!', 'success');
+            }
+            
+            // Save to localStorage and update UI
+            savePatients();
+            renderPatientList();
+            
+            // Keep the current patient loaded
+            loadPatient(patientData.id);
+        }
+        
+        // Delete current patient
+        function deletePatient() {
+            if (!currentPatientId) return;
+            
+            if (confirm('Are you sure you want to delete this patient record? This action cannot be undone.')) {
+                const index = patients.findIndex(p => p.id === currentPatientId);
+                if (index >= 0) {
+                    patients.splice(index, 1);
+                    savePatients();
+                    renderPatientList();
+                    showToast('Patient record deleted.', 'success');
+                    showEmptyState();
+                }
+            }
+        }
+        
+        // Update exclusion criteria status
+        function updateExclusionStatus() {
+            const crossMatching = document.getElementById('crossMatching').value;
+            const preparedBlood = document.getElementById('preparedBlood').value;
+            
+            const crossMatchingStatus = document.getElementById('crossMatchingStatus');
+            const preparedBloodStatus = document.getElementById('preparedBloodStatus');
+            const overallStatus = document.getElementById('exclusionOverallStatus');
+            
+            // Update cross matching status
+            if (crossMatching === 'done') {
+                crossMatchingStatus.textContent = 'Ready';
+                crossMatchingStatus.className = 'exclusion-status status-ready';
+            } else if (crossMatching === 'not yet') {
+                crossMatchingStatus.textContent = 'Not Ready Yet';
+                crossMatchingStatus.className = 'exclusion-status status-not-ready';
+            } else if (crossMatching === 'no') {
+                crossMatchingStatus.textContent = 'Excluded';
+                crossMatchingStatus.className = 'exclusion-status status-excluded';
+            } else {
+                crossMatchingStatus.textContent = '';
+                crossMatchingStatus.className = 'exclusion-status';
+            }
+            
+            // Update prepared blood status
+            if (preparedBlood === 'yes') {
+                preparedBloodStatus.textContent = 'Ready';
+                preparedBloodStatus.className = 'exclusion-status status-ready';
+            } else if (preparedBlood === 'not yet') {
+                preparedBloodStatus.textContent = 'Not Ready Yet';
+                preparedBloodStatus.className = 'exclusion-status status-not-ready';
+            } else if (preparedBlood === 'no') {
+                preparedBloodStatus.textContent = 'Excluded';
+                preparedBloodStatus.className = 'exclusion-status status-excluded';
+            } else {
+                preparedBloodStatus.textContent = '';
+                preparedBloodStatus.className = 'exclusion-status';
+            }
+            
+            // Update overall status
+            if (crossMatching === 'no' || preparedBlood === 'no') {
+                overallStatus.textContent = 'PATIENT EXCLUDED - Cannot proceed with AVF';
+                overallStatus.className = 'exclusion-status status-excluded';
+            } else if (crossMatching === 'done' && preparedBlood === 'yes') {
+                overallStatus.textContent = 'PATIENT READY - Can proceed with AVF';
+                overallStatus.className = 'exclusion-status status-ready';
+            } else {
+                overallStatus.textContent = 'PATIENT NOT READY YET - Requires further preparation';
+                overallStatus.className = 'exclusion-status status-not-ready';
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Export data as JSON file
+        function exportData() {
+            if (patients.length === 0) {
+                showToast('No patient data to export.', 'error');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(patients, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `avf_patients_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast(`Exported ${patients.length} patient records.`, 'success');
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // New patient buttons
+            document.getElementById('newPatientBtn').addEventListener('click', newPatient);
+            document.getElementById('emptyNewPatientBtn').addEventListener('click', newPatient);
+            
+            // Save patient form
+            patientForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                savePatient();
+            });
+            
+            // Cancel button
+            document.getElementById('cancelBtn').addEventListener('click', showEmptyState);
+            
+            // Delete button
+            document.getElementById('deleteBtn').addEventListener('click', deletePatient);
+            
+            // Export data button
+            document.getElementById('exportDataBtn').addEventListener('click', exportData);
+            
+            // Exclusion criteria change listeners
+            document.getElementById('crossMatching').addEventListener('change', updateExclusionStatus);
+            document.getElementById('preparedBlood').addEventListener('change', updateExclusionStatus);
+            
+            // Show/hide "other" fields based on selection
+            document.querySelectorAll('input[name="avfLocation"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const otherContainer = document.getElementById('otherLocationContainer');
+                    otherContainer.classList.toggle('show', this.value === 'Other');
+                });
+            });
+            
+            document.getElementById('complicationOther').addEventListener('change', function() {
+                const otherContainer = document.getElementById('otherComplicationContainer');
+                otherContainer.classList.toggle('show', this.checked);
+            });
+            
+            document.getElementById('failureReason').addEventListener('change', function() {
+                const otherContainer = document.getElementById('otherFailureContainer');
+                otherContainer.classList.toggle('show', this.value === 'Other');
+            });
+            
+            // When "None" is selected for complications, uncheck all others
+            document.getElementById('complicationNone').addEventListener('change', function() {
+                if (this.checked) {
+                    document.querySelectorAll('input[name="complications"]').forEach(checkbox => {
+                        if (checkbox.id !== 'complicationNone') {
+                            checkbox.checked = false;
+                        }
+                    });
+                    document.getElementById('otherComplicationContainer').classList.remove('show');
+                }
+            });
+            
+            // When any other complication is selected, uncheck "None"
+            document.querySelectorAll('input[name="complications"]').forEach(checkbox => {
+                if (checkbox.id !== 'complicationNone') {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            document.getElementById('complicationNone').checked = false;
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
